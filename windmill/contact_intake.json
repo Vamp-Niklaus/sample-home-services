@@ -1,0 +1,72 @@
+{
+    "summary": "contact_intake_flow",
+    "description": "",
+    "value": {
+        "modules": [
+            {
+                "id": "a",
+                "value": {
+                    "path": "f/contact_intake/insert_submission",
+                    "type": "script",
+                    "is_trigger": false,
+                    "input_transforms": {
+                        "name": {
+                            "expr": "flow_input.name",
+                            "type": "javascript"
+                        },
+                        "email": {
+                            "expr": "flow_input.email",
+                            "type": "javascript"
+                        },
+                        "message": {
+                            "expr": "flow_input.message",
+                            "type": "javascript"
+                        },
+                        "request_id": {
+                            "expr": "flow_input.request_id",
+                            "type": "javascript"
+                        }
+                    }
+                },
+                "summary": "insert_submission"
+            }
+        ],
+        "groups": []
+    },
+    "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+            "request_id": {
+                "default": null,
+                "description": "",
+                "originalType": "string",
+                "type": "string"
+            },
+            "name": {
+                "default": null,
+                "description": "",
+                "originalType": "string",
+                "type": "string"
+            },
+            "email": {
+                "default": null,
+                "description": "",
+                "originalType": "string",
+                "type": "string"
+            },
+            "message": {
+                "default": null,
+                "description": "",
+                "originalType": "string",
+                "type": "string"
+            }
+        },
+        "required": [
+            "request_id",
+            "name",
+            "email",
+            "message"
+        ],
+        "type": "object"
+    }
+}
