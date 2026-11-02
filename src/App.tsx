@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import {
@@ -7,9 +7,9 @@ import {
   Home,
   CheckCircle2,
   AlertTriangle,
-  Send,
   Loader2,
   Sparkles,
+  Clock,
   ChevronRight,
   HelpCircle,
   Copy,
@@ -17,6 +17,8 @@ import {
   Server,
   Workflow,
   ArrowRight,
+  PhoneCall,
+  Calendar
 } from 'lucide-react';
 
 interface ContactFormData {
@@ -74,7 +76,7 @@ export default function App() {
       const result = await response.json();
 
       if (response.status === 200 && result.status === 'received') {
-        toast.success(`Inquiry received! Reference ID: ${requestId}`);
+        toast.success(`Callback request received! Reference ID: ${requestId}`);
         setLastSubmissionId(requestId);
         reset();
       } else {
@@ -82,7 +84,7 @@ export default function App() {
           result.error ||
           result.message ||
           result.details ||
-          'Failed to submit your inquiry. Please try again.';
+          'Failed to submit your request. Please try again.';
         toast.error(errorMsg);
       }
     } catch (err: unknown) {
@@ -99,7 +101,7 @@ export default function App() {
   const handleServiceSelect = (serviceTitle: string) => {
     setValue(
       'message',
-      `Hello, I would like to inquire about your "${serviceTitle}" service. Please provide an estimate and availability.`
+      `Hello, I would like to inquire about your "${serviceTitle}" service. Please arrange a callback with an estimate and weekend/weekday availability.`
     );
     const contactElem = document.getElementById('contact');
     if (contactElem) {
@@ -185,8 +187,8 @@ export default function App() {
               href="#contact"
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#9E7FFF] text-[#171717] font-semibold text-sm hover:bg-[#8b66fa] hover:text-white transition-all duration-200 shadow-md shadow-[#9E7FFF]/20 hover:shadow-[#9E7FFF]/40 hover:-translate-y-0.5 active:translate-y-0"
             >
-              <span>Contact Us</span>
-              <ArrowRight className="w-4 h-4" />
+              <PhoneCall className="w-4 h-4" />
+              <span>Request a callback</span>
             </a>
           </div>
         </div>
@@ -229,8 +231,9 @@ export default function App() {
                 href="#contact"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-gradient-to-r from-[#9E7FFF] to-[#8b66fa] text-[#171717] font-bold text-base hover:from-[#8b66fa] hover:to-[#9E7FFF] hover:text-white transition-all duration-300 shadow-xl shadow-[#9E7FFF]/25 hover:shadow-[#9E7FFF]/40 hover:-translate-y-0.5 active:translate-y-0"
               >
-                <span>Contact Us for Service</span>
-                <ChevronRight className="w-5 h-5" />
+                <PhoneCall className="w-5 h-5" />
+                <span>Request a callback</span>
+                <ChevronRight className="w-5 h-5 ml-1" />
               </a>
 
               <a
@@ -251,7 +254,7 @@ export default function App() {
               </div>
               <div className="p-4 rounded-xl bg-[#262626]/50 border border-[#2F2F2F]">
                 <div className="text-2xl font-bold text-[#38bdf8] flex items-center justify-center gap-1">
-                  <span>&lt; 250ms</span>
+                  <span>250ms</span>
                 </div>
                 <div className="text-xs text-[#A3A3A3] mt-1">Edge Intake Latency</div>
               </div>
@@ -462,16 +465,52 @@ export default function App() {
         {/* 5. Contact Form Section (#contact) */}
         <section id="contact" className="py-20 bg-[#1a1a1a] border-t border-[#2F2F2F]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
+            <div className="text-center mb-10">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#9E7FFF]/10 text-[#9E7FFF] text-xs font-semibold uppercase tracking-wider mb-3">
                 Inquiry & Scheduling
               </div>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                Contact Us
+                Request a Callback
               </h2>
               <p className="mt-3 text-[#A3A3A3] text-base max-w-xl mx-auto">
-                Fill out the demo inquiry form below. Submissions are processed in real-time through the Supabase Edge intake service.
+                Fill out the form below to request a callback. Submissions are processed in real-time through the Supabase Edge intake service.
               </p>
+            </div>
+
+            {/* Weekend Appointments Callout Banner */}
+            <div className="mb-8 p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-[#9E7FFF]/15 via-[#38bdf8]/10 to-[#9E7FFF]/15 border border-[#9E7FFF]/30 shadow-xl shadow-[#9E7FFF]/5 relative overflow-hidden backdrop-blur-sm">
+              <div className="absolute top-0 right-0 -mt-3 -mr-3 w-32 h-32 bg-[#9E7FFF]/10 rounded-full blur-2xl pointer-events-none" />
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 relative z-10">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-[#9E7FFF]/20 border border-[#9E7FFF]/40 flex items-center justify-center shrink-0 text-[#9E7FFF] shadow-md shadow-[#9E7FFF]/20">
+                    <Calendar className="w-6 h-6 text-[#9E7FFF]" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2.5 flex-wrap mb-1.5">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#9E7FFF]/20 text-[#cbb8ff] border border-[#9E7FFF]/30">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse" />
+                        Weekend Slots Available
+                      </span>
+                      <span className="text-xs text-[#38bdf8] font-medium flex items-center gap-1">
+                        <Clock className="w-3.5 h-3.5" />
+                        Sat &amp; Sun: 8:00 AM – 6:00 PM
+                      </span>
+                    </div>
+                    <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
+                      Weekend Appointments Callout
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#A3A3A3] mt-1 leading-relaxed">
+                      Need repairs, assembly, or home upkeep this weekend? We schedule convenient Saturday and Sunday appointment windows at no extra charge. Request a callback to confirm slot availability.
+                    </p>
+                  </div>
+                </div>
+                <div className="sm:self-center shrink-0 w-full sm:w-auto">
+                  <div className="inline-flex items-center justify-center sm:justify-start gap-2 px-3.5 py-2 rounded-xl bg-[#262626]/80 border border-[#2F2F2F] text-xs font-semibold text-emerald-400 w-full sm:w-auto text-center">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>No weekend surcharges</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Submission Success Reference Banner if submitted */}
@@ -483,7 +522,7 @@ export default function App() {
                   </div>
                   <div>
                     <h4 className="text-white font-semibold text-sm">
-                      Submission Received Successfully!
+                      Callback Request Received!
                     </h4>
                     <p className="text-xs text-[#A3A3A3] mt-0.5 font-mono break-all">
                       Reference ID: <span className="text-[#9E7FFF] font-semibold">{lastSubmissionId}</span>
@@ -616,7 +655,7 @@ export default function App() {
                   <textarea
                     id="message"
                     rows={5}
-                    placeholder="Describe your project, required repairs, timeline, or any specific instructions..."
+                    placeholder="Describe your project, desired weekend or weekday timeslot, required repairs, or any specific instructions..."
                     disabled={submitting}
                     className={`w-full px-4 py-3 rounded-xl bg-[#171717] border ${
                       errors.message
@@ -643,7 +682,7 @@ export default function App() {
                   )}
                 </div>
 
-                {/* Submit Button */}
+                {/* Submit Button - Request a callback */}
                 <div>
                   <button
                     type="submit"
@@ -653,12 +692,12 @@ export default function App() {
                     {submitting ? (
                       <>
                         <Loader2 className="w-5 h-5 animate-spin" />
-                        <span>Sending Inquiry...</span>
+                        <span>Requesting callback...</span>
                       </>
                     ) : (
                       <>
-                        <Send className="w-5 h-5" />
-                        <span>Contact Us</span>
+                        <PhoneCall className="w-5 h-5" />
+                        <span>Request a callback</span>
                       </>
                     )}
                   </button>
